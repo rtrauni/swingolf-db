@@ -23,11 +23,14 @@ public class Application {
 	}
 
 	@Bean
-	CommandLineRunner demo(UserRepository UserRepository) {
+	CommandLineRunner demo(UserRepository UserRepository, UserRestController userRestController) {
 		return args -> {
 
 			for (User user : UserRepository.findAll()) {
-				System.out.println(user.getFirstname());
+				System.out.println(user);
+			}
+			for (UserAndLicense userAndLicense : userRestController.readBookmarksAnd()) {
+				System.out.println(userAndLicense);
 			}
 		};
 	}

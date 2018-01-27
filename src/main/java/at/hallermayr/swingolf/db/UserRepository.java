@@ -7,5 +7,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends GraphRepository<User> {
 
-    User findByFirstname(String firstname);
 }

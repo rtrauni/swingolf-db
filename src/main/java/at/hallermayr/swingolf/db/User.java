@@ -17,16 +17,23 @@ public class User {
 
 	private String firstname;
 
-private String lastname;
+    private String lastname;
 
-private String email;
+    private String email;
 
-	private User() {
+	@Relationship(type="HAS_LICENSE", direction = Relationship.OUTGOING)
+	License license;
+
+	protected User() {
 		// Empty constructor required as of Neo4j API 2.0.5
 	};
 
-	public User(String firstname) {
-		this.firstname = firstname;
+	public Long getId() {
+		return id;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 
 	public String getFirstname() {
@@ -45,12 +52,22 @@ private String email;
 		this.lastname = lastname;
 	}
 
+	public License getLicense() {
+		return license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
 				"id=" + id +
 				", firstname='" + firstname + '\'' +
 				", lastname='" + lastname + '\'' +
+				", email='" + email + '\'' +
+				", license=" + license +
 				'}';
 	}
 }
