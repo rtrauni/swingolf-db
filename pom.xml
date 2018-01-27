@@ -32,7 +32,11 @@
 			<artifactId>guava</artifactId>
 			<version>23.6-jre</version>
 		</dependency>
-
+		<dependency> <!-- If you're using the Bolt driver -->
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm-bolt-driver</artifactId>
+			<version>2.1.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
