@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -25,6 +26,22 @@ class TournamentRestController {
 	@RequestMapping(value = "/tournaments-and-dates",method = RequestMethod.GET)
 	Collection<TournamentAndDate> readBookmarksAnd() {
 		Iterable<Tournament> tournaments = this.tournamentRepository.findAll();
+		return flattenTournamentsAndDates(tournaments);
+	}
+
+	@RequestMapping(value = "/tournaments-next3",method = RequestMethod.GET)
+	Collection<TournamentAndDate> nextTournaments() {
+		Iterable<Tournament> tournaments = this.tournamentRepository.findNextTournaments(DateUtil.getToday());
+		List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().map(Tournament::getId).collect(Collectors.toList());
+		tournaments = this.tournamentRepository.findAll(tournamentIdList);
+		return flattenTournamentsAndDates(tournaments);
+	}
+
+	@RequestMapping(value = "/tournaments-previous3",method = RequestMethod.GET)
+	Collection<TournamentAndDate> previousTournaments() {
+		Iterable<Tournament> tournaments = this.tournamentRepository.findPreviousTournaments(DateUtil.getToday());
+		List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().map(Tournament::getId).collect(Collectors.toList());
+		tournaments = this.tournamentRepository.findAll(tournamentIdList);
 		return flattenTournamentsAndDates(tournaments);
 	}
 
