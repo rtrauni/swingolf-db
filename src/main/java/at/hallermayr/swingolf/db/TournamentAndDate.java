@@ -1,16 +1,26 @@
 package at.hallermayr.swingolf.db;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+
 public class TournamentAndDate {
+    SimpleDateFormat parser=new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
     private Long id;
     private final String name;
-    private final Long from;
-    private final Long to;
+    private String from;
+    private String to;
 
     public TournamentAndDate(Tournament tournament) {
         this.id=tournament.getId();
         this.name =tournament.getName();
-        this.from =tournament.getDuration().getFrom();
-        this.to =tournament.getDuration().getTo();
+        try {
+            this.from = formatter.format(parser.parse(new Long(tournament.getDuration().getFrom()).toString())).toString();
+            this.to =formatter.format(parser.parse(new Long(tournament.getDuration().getFrom()).toString())).toString();
+            } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage(),e);
+        }
     }
 
     public Long getId() {
@@ -21,11 +31,11 @@ public class TournamentAndDate {
         return name;
     }
 
-    public Long getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public Long getTo() {
+    public String getTo() {
         return to;
     }
 }
