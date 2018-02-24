@@ -23,15 +23,20 @@ class UserRestController {
 
 	@Autowired
 	private TournamentRepository tournamentRepository;
+	private Collection<UserAndLicense> users;
 
 	@RequestMapping(value = "/users",method = RequestMethod.GET)
 	Collection<User> readBookmarks() {
 		return Lists.newArrayList(this.userRepository.findAll());
 	}
+
 	@RequestMapping(value = "/users-and-license",method = RequestMethod.GET)
 	Collection<UserAndLicense> readBookmarksAnd() {
-		Iterable<User> users = this.userRepository.findAll();
-		return flattenUsersAndLicense(users);
+		if (this.users==null) {
+			Iterable<User> users = this.userRepository.findAll();
+			this.users = flattenUsersAndLicense(users);
+		}
+		return this.users;
 	}
 
 	@RequestMapping(value = "/usersByTournament",method = RequestMethod.GET)
