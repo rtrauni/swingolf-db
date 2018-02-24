@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 
-public class TournamentAndDate {
+public class TournamentAndDate implements Comparable<TournamentAndDate> {
     SimpleDateFormat parser=new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
     private Long id;
@@ -37,5 +37,10 @@ public class TournamentAndDate {
 
     public String getTo() {
         return to;
+    }
+
+    @Override
+    public int compareTo(TournamentAndDate o) {
+        return this.getFrom().compareTo(o.getFrom());
     }
 }

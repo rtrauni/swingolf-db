@@ -10,4 +10,7 @@ public interface UserRepository extends GraphRepository<User> {
 
     @Query("MATCH (user:User)<-[:WAS_PLAYED_BY]-(score:Score)-[:WAS_PLAYED_IN_GAME]->(game:Game) WHERE ID(game) = {0} RETURN user")
     List<User> findByGame(Long gameId);
+
+    @Query("MATCH (user:User)-[:HAS_LICENSE]->(license:License) WHERE license.license = {0} RETURN user")
+    List<User> findByLicense(String license);
 }
