@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -58,6 +55,38 @@ class TournamentRestController {
 		final List<Tournament> tournaments = new LinkedList<>();
 		users.stream().forEach(user -> {
 				tournaments.addAll(Lists.newArrayList(this.tournamentRepository.findPreviousTournamentsByUser(user.getId())));
+		});
+
+		List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().map(Tournament::getId).collect(Collectors.toList());
+		Iterable<Tournament> result = this.tournamentRepository.findAll(tournamentIdList);
+		return flattenTournamentsAndDates(result);
+	}
+
+	@RequestMapping(value = "/tournaments-this-year-by-player",method = RequestMethod.GET)
+	Collection<TournamentAndDate> tournamentsThisYearPlayer(@RequestParam String license) {
+		List<User> users = userRepository.findByLicense(license);
+		// TODO workaround for multiple user representation in datamodel
+		final List<Tournament> tournaments = new LinkedList<>();
+		users.stream().forEach(user -> {
+			tournaments.addAll(Lists.newArrayList(this.tournamentRepository.findPreviousTournamentsByUser(user.getId())));
+		});
+
+		List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().filter(tournament -> thisYear(tournament.getDuration())).map(Tournament::getId).collect(Collectors.toList());
+		Iterable<Tournament> result = this.tournamentRepository.findAll(tournamentIdList);
+		return flattenTournamentsAndDates(result);
+	}
+
+	private boolean thisYear(Duration duration) {
+		return new GregorianCalendar().get(Calendar.YEAR)*1000 < duration.getFrom();
+	}
+
+	@RequestMapping(value = "/tournaments-all-by-player",method = RequestMethod.GET)
+	Collection<TournamentAndDate> tournamentsAllPlayer(@RequestParam String license) {
+		List<User> users = userRepository.findByLicense(license);
+		// TODO workaround for multiple user representation in datamodel
+		final List<Tournament> tournaments = new LinkedList<>();
+		users.stream().forEach(user -> {
+			tournaments.addAll(Lists.newArrayList(this.tournamentRepository.findPreviousTournamentsByUser(user.getId())));
 		});
 
 		List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().map(Tournament::getId).collect(Collectors.toList());
