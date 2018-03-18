@@ -77,6 +77,9 @@ class TournamentRestController {
 	}
 
 	private boolean thisYear(Duration duration) {
+		if (duration == null) {
+			return false;
+		}
 		return new GregorianCalendar().get(Calendar.YEAR)*1000 < duration.getFrom();
 	}
 
