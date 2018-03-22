@@ -2,8 +2,8 @@ package at.hallermayr.swingolf.db;
 
 import org.neo4j.ogm.annotation.GraphId;
 
-public class UserAndLicense {
-    private Long id;
+public class UserAndLicense implements Comparable<UserAndLicense> {
+    protected Long id;
 
     private String firstname;
 
@@ -13,6 +13,13 @@ public class UserAndLicense {
 
     private String license;
 
+    public UserAndLicense(UserAndLicense userAndLicense) {
+        this.id = userAndLicense.getId();
+        this.firstname = userAndLicense.firstname;
+        this.lastname = userAndLicense.lastname;
+        this.email = userAndLicense.email;
+        this.license= userAndLicense.license;
+    }
     public UserAndLicense(User user) {
         this.id=user.getId();
         this.firstname =user.getFirstname();
@@ -50,5 +57,26 @@ public class UserAndLicense {
                 ", email='" + email + '\'' +
                 ", license='" + license + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserAndLicense that = (UserAndLicense) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+
+    @Override
+    public int compareTo(UserAndLicense o) {
+        return this.getId().compareTo(o.getId());
     }
 }

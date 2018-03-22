@@ -29,6 +29,6 @@ class ScoreRestController {
 	@RequestMapping(value = "/scoresByGame",method = RequestMethod.GET)
 	Collection<Score> findByGame(@RequestParam Long gameId) {
 		Game game = gameRepository.findOne(gameId);
-		return Lists.newArrayList(this.scoreRepository.findByGame(game));
+		return Lists.newArrayList(this.scoreRepository.findByGame(game.getId()));
 	}
 }
