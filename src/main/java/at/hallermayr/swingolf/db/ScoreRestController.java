@@ -31,4 +31,5 @@ class ScoreRestController {
 		Game game = gameRepository.findOne(gameId);
 		return Lists.newArrayList(this.scoreRepository.findByGame(game.getId()));
 	}
+
 }

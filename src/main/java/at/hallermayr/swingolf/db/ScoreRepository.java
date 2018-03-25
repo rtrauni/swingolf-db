@@ -10,4 +10,7 @@ public interface ScoreRepository extends GraphRepository<Score> {
 
     @Query("MATCH (score:Score)-[:WAS_PLAYED_IN_GAME]->(game:Game) WHERE ID(game) = {0} RETURN score")
     List<Score> findByGame(Long gameId);
+
+    @Query("MATCH (score:Score)-[:WAS_PLAYED_BY]->(user:User) WHERE ID(user) = {0} RETURN score")
+    List<Score> findByUser(Long userId);
 }
