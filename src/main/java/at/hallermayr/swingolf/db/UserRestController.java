@@ -2,8 +2,10 @@ package at.hallermayr.swingolf.db;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -112,7 +114,7 @@ class UserRestController {
         if (game == null) {
             return false;
         }
-        return new GregorianCalendar().get(Calendar.YEAR)*1000 < game.getDate();
+        return new GregorianCalendar().get(Calendar.YEAR) * 1000 < Integer.valueOf(game.getDate());
     }
 
     private Iterable<User> load(List<User> byGame) {

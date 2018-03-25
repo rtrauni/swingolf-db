@@ -2,9 +2,6 @@ package at.hallermayr.swingolf.db;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-
-import java.util.List;
 
 @NodeEntity
 public class Game {
@@ -12,7 +9,7 @@ public class Game {
 	@GraphId private Long id;
 
 	private String name;
-	private Long date;
+    private String date;
 
 //	@Relationship(type="WAS_PLAYED_IN_GAME", direction = Relationship.INCOMING)
 //	private List<Score> score;
@@ -29,7 +26,7 @@ public class Game {
 		return name;
 	}
 
-	public Long getDate() {
+    public String getDate() {
 		return date;
 	}
 
