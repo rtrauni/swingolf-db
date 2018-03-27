@@ -3,6 +3,8 @@ package at.hallermayr.swingolf.db;
 import org.neo4j.ogm.annotation.GraphId;
 
 public class UserAndLicense implements Comparable<UserAndLicense> {
+    private String handicap;
+    private String category;
     protected Long id;
 
     private String firstname;
@@ -19,12 +21,16 @@ public class UserAndLicense implements Comparable<UserAndLicense> {
         this.lastname = userAndLicense.lastname;
         this.email = userAndLicense.email;
         this.license= userAndLicense.license;
+        this.category=userAndLicense.category;
+        this.handicap=userAndLicense.handicap;
     }
     public UserAndLicense(User user) {
         this.id=user.getId();
         this.firstname =user.getFirstname();
         this.lastname =user.getLastname();
         this.email = user.getEmail();
+        this.category = user.getCategory();
+        this.handicap= user.getHandicap();
         this.license = user.getLicense() == null ? null: user.getLicense().getLicense();
     }
 
@@ -48,6 +54,14 @@ public class UserAndLicense implements Comparable<UserAndLicense> {
         return license;
     }
 
+    public String getHandicap() {
+        return handicap;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
     @Override
     public String toString() {
         return "UserAndLicense{" +
@@ -56,6 +70,8 @@ public class UserAndLicense implements Comparable<UserAndLicense> {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", license='" + license + '\'' +
+                ", category='" + category + '\'' +
+                ", handicap='" + handicap + '\'' +
                 '}';
     }
 

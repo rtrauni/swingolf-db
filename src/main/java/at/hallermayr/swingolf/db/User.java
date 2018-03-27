@@ -21,6 +21,10 @@ public class User {
 
     private String email;
 
+	private String handicap;
+
+	private String category;
+
 	@Relationship(type="HAS_LICENSE", direction = Relationship.OUTGOING)
 	License license;
 
@@ -58,6 +62,22 @@ public class User {
 
 	public void setLicense(License license) {
 		this.license = license;
+	}
+
+	public String getHandicap() {
+		return handicap;
+	}
+
+	public void setHandicap(String handicap) {
+		this.handicap = handicap;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	@Override

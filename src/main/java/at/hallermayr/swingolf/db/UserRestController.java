@@ -42,6 +42,12 @@ class UserRestController {
         return this.users;
     }
 
+    @RequestMapping(value = "/userByLicense", method = RequestMethod.GET)
+    UserAndLicense userbyid(@RequestParam String license) {
+        User user = userRepository.findByLicense(license).stream().findFirst().get();
+        return flattenUsersAndLicense(load(Collections.singletonList(user))).stream().findFirst().get();
+    }
+
     @RequestMapping(value = "/usersByTournament", method = RequestMethod.GET)
     Collection<UserAndLicense> findByGame(@RequestParam Long tournamentId) {
         Tournament tournament = tournamentRepository.findOne(tournamentId);
