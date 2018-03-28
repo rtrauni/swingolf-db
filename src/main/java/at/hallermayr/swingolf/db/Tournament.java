@@ -11,6 +11,8 @@ public class Tournament {
 
 	private String name;
 
+	private String correcture;
+
 	@Relationship(type="HAS_DATE", direction = Relationship.OUTGOING)
 	Duration duration;
 
@@ -27,6 +29,10 @@ public class Tournament {
 
 	public String getName() {
 		return name;
+	}
+
+	public String getCorrecture() {
+		return correcture;
 	}
 
 	public Duration getDuration() {

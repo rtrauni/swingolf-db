@@ -80,7 +80,7 @@ class TournamentRestController {
 		if (duration == null) {
 			return false;
 		}
-		return new GregorianCalendar().get(Calendar.YEAR)*1000 < duration.getFrom();
+		return new GregorianCalendar().get(Calendar.YEAR)*10000 < duration.getFrom();
 	}
 
 	@RequestMapping(value = "/tournaments-all-by-player",method = RequestMethod.GET)
