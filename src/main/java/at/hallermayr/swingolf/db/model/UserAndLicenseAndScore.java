@@ -1,7 +1,8 @@
-package at.hallermayr.swingolf.db;
+package at.hallermayr.swingolf.db.model;
 
 public class UserAndLicenseAndScore extends UserAndLicense {
     private Integer score;
+
     public UserAndLicenseAndScore(UserAndLicense userAndLicense, Integer score) {
         super(userAndLicense);
         this.score = score;
@@ -17,6 +18,6 @@ public class UserAndLicenseAndScore extends UserAndLicense {
 
     @Override
     public int compareTo(UserAndLicense o) {
-        return this.getScore().compareTo(((UserAndLicenseAndScore)o).getScore());
+        return this.getScore().compareTo(((UserAndLicenseAndScore) o).getScore());
     }
 }

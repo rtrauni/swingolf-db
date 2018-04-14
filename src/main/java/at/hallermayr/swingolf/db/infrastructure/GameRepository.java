@@ -1,9 +1,7 @@
-package at.hallermayr.swingolf.db;
+package at.hallermayr.swingolf.db.infrastructure;
 
-import org.springframework.data.neo4j.annotation.Query;
+import at.hallermayr.swingolf.db.model.Game;
 import org.springframework.data.neo4j.repository.GraphRepository;
-
-import java.util.List;
 
 public interface GameRepository extends GraphRepository<Game> {
 

@@ -1,4 +1,4 @@
-package at.hallermayr.swingolf.db;
+package at.hallermayr.swingolf.db.model;
 
 import org.neo4j.ogm.annotation.GraphId;
 

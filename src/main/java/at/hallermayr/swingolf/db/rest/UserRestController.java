@@ -1,5 +1,10 @@
-package at.hallermayr.swingolf.db;
+package at.hallermayr.swingolf.db.rest;
 
+import at.hallermayr.swingolf.db.infrastructure.GameRepository;
+import at.hallermayr.swingolf.db.infrastructure.ScoreRepository;
+import at.hallermayr.swingolf.db.infrastructure.TournamentRepository;
+import at.hallermayr.swingolf.db.infrastructure.UserRepository;
+import at.hallermayr.swingolf.db.model.*;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +34,11 @@ class UserRestController {
     @Autowired
     private ScoreRepository scoreRepository;
     private Collection<UserAndLicense> users;
+
+    @PostConstruct
+    public void init() {
+        readBookmarksAnd();
+    }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     Collection<User> readBookmarks() {
@@ -97,7 +108,7 @@ class UserRestController {
         List<UserAndLicenseAndScore> usersAndLicenseAndScore = players.stream().map(userAndLicense -> new UserAndLicenseAndScore(userAndLicense, result.get(userAndLicense.getId()))).sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         Comparator<UserAndLicenseAndScore> compareFunction = (o1, o2) -> (o1.getScore().intValue() - o2.getScore().intValue());
         OptionalDouble average = usersAndLicenseAndScore.stream().mapToInt(value -> value.getScore()).average();
-        return average.isPresent() ? Collections.singletonList(""+format(average.getAsDouble())) : Collections.singletonList("-");
+        return average.isPresent() ? Collections.singletonList("" + format(average.getAsDouble())) : Collections.singletonList("-");
     }
 
     @RequestMapping(value = "/bestTrackByTournament", method = RequestMethod.GET)
@@ -108,7 +119,7 @@ class UserRestController {
                 score.getId()
         ).collect(Collectors.toList());
         OptionalInt min = StreamSupport.stream(scoreRepository.findAll(scoreIds).spliterator(), false).mapToInt(value -> Integer.valueOf(value.getScore())).min();
-        return min.isPresent() ? Collections.singletonList(""+min.getAsInt()) : Collections.singletonList("-");
+        return min.isPresent() ? Collections.singletonList("" + min.getAsInt()) : Collections.singletonList("-");
     }
 
     @RequestMapping(value = "/averageTrackByTournament", method = RequestMethod.GET)
@@ -119,7 +130,7 @@ class UserRestController {
                 score.getId()
         ).collect(Collectors.toList());
         OptionalDouble average = StreamSupport.stream(scoreRepository.findAll(scoreIds).spliterator(), false).mapToInt(value -> Integer.valueOf(value.getScore())).average();
-        return average.isPresent() ? Collections.singletonList(""+format(average.getAsDouble())) : Collections.singletonList("-");
+        return average.isPresent() ? Collections.singletonList("" + format(average.getAsDouble())) : Collections.singletonList("-");
     }
 
     private String format(double asDouble) {
@@ -142,10 +153,10 @@ class UserRestController {
         List<Score> thisYearScores = StreamSupport.stream(result.spliterator(), false).filter(score -> thisYear(score.getGame())).collect(Collectors.toList());
         HashMap<Long, Integer> group = new HashMap<>();
         for (Score thisYearScore : thisYearScores) {
-            if (!group.containsKey(thisYearScore.getGame().getId())){
-                group.put(thisYearScore.getGame().getId(),0);
+            if (!group.containsKey(thisYearScore.getGame().getId())) {
+                group.put(thisYearScore.getGame().getId(), 0);
             }
-            group.put(thisYearScore.getGame().getId(),group.get(thisYearScore.getGame().getId())+Integer.valueOf(thisYearScore.getScore()));
+            group.put(thisYearScore.getGame().getId(), group.get(thisYearScore.getGame().getId()) + Integer.valueOf(thisYearScore.getScore()));
         }
         Optional<Integer> minScore = group.values().stream().min(Integer::min);
         return minScore.isPresent() ? Collections.singletonList(minScore.get().toString()) : Collections.singletonList("-");
@@ -165,10 +176,10 @@ class UserRestController {
         List<Score> thisYearScores = StreamSupport.stream(result.spliterator(), false).collect(Collectors.toList());
         HashMap<Long, Integer> group = new HashMap<>();
         for (Score thisYearScore : thisYearScores) {
-            if (!group.containsKey(thisYearScore.getGame().getId())){
-                group.put(thisYearScore.getGame().getId(),0);
+            if (!group.containsKey(thisYearScore.getGame().getId())) {
+                group.put(thisYearScore.getGame().getId(), 0);
             }
-            group.put(thisYearScore.getGame().getId(),group.get(thisYearScore.getGame().getId())+Integer.valueOf(thisYearScore.getScore()));
+            group.put(thisYearScore.getGame().getId(), group.get(thisYearScore.getGame().getId()) + Integer.valueOf(thisYearScore.getScore()));
         }
         Optional<Integer> minScore = group.values().stream().min(Integer::min);
         return minScore.isPresent() ? Collections.singletonList(minScore.get().toString()) : Collections.singletonList("-");
