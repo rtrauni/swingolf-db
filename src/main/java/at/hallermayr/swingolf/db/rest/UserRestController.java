@@ -37,7 +37,12 @@ class UserRestController {
 
     @PostConstruct
     public void init() {
-        readBookmarksAnd();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                readBookmarksAnd();
+            }
+        }).start();
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
