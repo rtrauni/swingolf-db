@@ -77,7 +77,7 @@ class TournamentRestController {
             tournaments.addAll(Lists.newArrayList(this.tournamentRepository.findPreviousTournamentsByUser(user.getId())));
         });
 
-        List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().filter(tournament -> thisYear(tournament.getDuration())).map(Tournament::getId).collect(Collectors.toList());
+        List<Long> tournamentIdList = Lists.newArrayList(tournaments).stream().map(tournament -> tournamentRepository.findOne(tournament.getId())).filter(tournament -> thisYear(tournament.getDuration())).map(Tournament::getId).collect(Collectors.toList());
         Iterable<Tournament> result = this.tournamentRepository.findAll(tournamentIdList);
         return flattenTournamentsAndDates(result);
     }
